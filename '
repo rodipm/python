@@ -1,0 +1,12 @@
+import requests
+
+user = 'huge'
+password = 'file'
+
+session = requests.Session()
+session.auth = (user, password)
+
+auth = session.post('http://www.pythonchallenge.com/pc/return/evil.html')
+response = session.get('http://www.pythonchallenge.com/pc/return/evil1.jpg')
+
+print(response)
