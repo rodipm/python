@@ -6,40 +6,26 @@ res = requests.get('http://www.pythonchallenge.com/pc/return/wire.png', auth=('h
 
 img = Image.open(BytesIO(res.content))
 
-cImg = Image.new('RGB', (100, 100))
+W, H = img.size
 
-p = 0
-for y in range(100):
-    for x in range(100):
-        cImg.putpixel((x, y), img.getpixel((p, 0)))
-        p += 1
+result = Image.new('RGB', (100, 100))
 
-# lets walk around then: (99, 98) -> ((99-98) = 1, (99-97) = 2) -> (97, 96) -> ((99-96) = 3, (99-95) = 4)
+x, y = -1, 0
+dirs = [(1,0), (0, 1), (-1, 0), (0, -1)]
 
-fImg = Image.new('RGB', (100, 100))
-px = 99
-py = 99
-for y in range(100):
-    for x in range(100):
-        px = py
-        py = px - 1
-        fImg.putpixel((x,y), cImg.getpixel((px, py)))
-        #px = py
-        #px = -1*px + (99)
-        #if (x%2 == 0):
-        #    py = px - 1
-        #else:
-        #    py = px + 1
-        #print(f'{px}, {py}')
-        #if (px >= 0 and py >= 0):
-        #    fImg.putpixel((x,y), cImg.getpixel((px, py)))
-fImg.show()
-       # if n != 99:
-       #     print(n)
-       #     if px % 2 == 0:
-       #         pixel = cImg.getpixel(((99-px), (99-py)))
-       #         print(str(99 - px) + ' ' + str(99 - py))
-       #     else:
-       #         pixel = cImg.getpixel((px, py))
-       #         print(str(px) + ' ' + str(py))
-       #     
+n = 0
+
+for i in range(100, 1, -2):
+    steps = [i, i-1, i-1, i-2]
+    
+    for j in range(4):
+        k = 0
+        while k < steps[j]:
+            x += dirs[j][0]
+            y += dirs[j][1]
+
+            result.putpixel((x, y), img.getpixel((n, 0)))
+
+            k += 1
+            n += 1
+result.show()
